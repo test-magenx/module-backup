@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testConstructor(): void
+    public function testConstructor()
     {
         $helper = new ObjectManager($this);
         $filesystem = $this->getMockBuilder(Filesystem::class)
@@ -42,9 +39,8 @@ class CollectionTest extends TestCase
         )->disableOriginalConstructor()
             ->getMock();
         $directoryWrite->expects($this->any())->method('create')->with('backups');
-        $directoryWrite->method('getAbsolutePath')
-            ->withConsecutive([], [], ['backups'])
-            ->willReturnOnConsecutiveCalls('', '');
+        $directoryWrite->expects($this->any())->method('getAbsolutePath')->willReturn('');
+        $directoryWrite->expects($this->at(3))->method('getAbsolutePath')->with('backups');
         $directoryWrite->expects($this->any())->method('isDirectory')->willReturn(true);
         $directoryWrite->expects($this->any())->method('getDriver')->willReturn($driver);
         $targetDirectory = $this->getMockBuilder(TargetDirectory::class)
